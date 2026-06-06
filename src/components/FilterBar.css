@@ -1,0 +1,30 @@
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  max-width: 500px;
+}
+
+.filter-btn {
+  padding: 6px 14px;
+  border: 1px solid #dee2e6;
+  border-radius: 20px;
+  background: transparent;
+  color: #868e96;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.filter-btn:hover {
+  border-color: #adb5bd;
+  color: #495057;
+}
+
+.filter-btn.active {
+  background: #1a1a2e;
+  color: #fff;
+  border-color: #1a1a2e;
+}

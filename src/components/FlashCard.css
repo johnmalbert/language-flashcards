@@ -1,0 +1,130 @@
+.flashcard-container {
+  perspective: 1000px;
+  width: 340px;
+  height: 220px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.flashcard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease;
+  transform-style: preserve-3d;
+}
+
+.flashcard.flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.flashcard-front {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #fff;
+}
+
+.flashcard-back {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #1a1a2e;
+  transform: rotateY(180deg);
+}
+
+.card-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.6;
+  margin-bottom: 8px;
+}
+
+.card-japanese {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.card-hint {
+  font-size: 0.75rem;
+  opacity: 0.4;
+  margin-top: 12px;
+}
+
+.card-reading {
+  font-size: 1.1rem;
+  opacity: 0.65;
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+.card-romaji {
+  font-size: 1.6rem;
+  font-weight: 600;
+  font-style: italic;
+  color: #e63946;
+  margin-bottom: 4px;
+}
+
+.card-english {
+  font-size: 1.2rem;
+  color: #495057;
+  text-align: center;
+}
+
+.card-category-badge {
+  margin-top: 12px;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  background: #1a1a2e;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  opacity: 0.7;
+}
+
+.card-english-front {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.card-romaji-hint {
+  font-size: 0.85rem;
+  opacity: 0.5;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.card-reading-back {
+  font-size: 1rem;
+  opacity: 0.65;
+  margin-top: 4px;
+}
+
+@media (max-width: 400px) {
+  .flashcard-container {
+    width: 290px;
+    height: 200px;
+  }
+
+  .card-japanese {
+    font-size: 2.8rem;
+  }
+}
