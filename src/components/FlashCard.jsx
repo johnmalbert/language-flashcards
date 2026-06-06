@@ -2,43 +2,47 @@ import { useState, useCallback, useMemo } from 'react';
 import { romajiToHiragana, containsKanji } from '../utils/romajiToHiragana';
 import './FlashCard.css';
 
-export default function FlashCard({ card, mode = 'jp-en' }) {
+export default function FlashCard({ card, mode = 'target-en', wordKey, pronKey, language }) {
   const [flipped, setFlipped] = useState(false);
 
   const handleFlip = useCallback(() => {
     setFlipped(f => !f);
   }, []);
 
-  const reading = useMemo(() => {
-    if (!containsKanji(card.japanese)) return null;
-    return romajiToHiragana(card.romaji);
-  }, [card.japanese, card.romaji]);
+  const word = card[wordKey];
+  const pronunciation = card[pronKey];
 
-  const frontContent = mode === 'jp-en' ? (
+  const reading = useMemo(() => {
+    if (language !== 'japanese') return null;
+    if (!containsKanji(word)) return null;
+    return romajiToHiragana(pronunciation);
+  }, [language, word, pronunciation]);
+
+  const frontContent = mode === 'target-en' ? (
     <>
-      <span className="card-label">Japanese</span>
-      <span className="card-japanese">{card.japanese}</span>
+      <span className="card-label">{language === 'japanese' ? 'Japanese' : 'Portuguese'}</span>
+      <span className="card-japanese">{word}</span>
       {reading && <span className="card-reading">{reading}</span>}
     </>
   ) : (
     <>
       <span className="card-label">English</span>
       <span className="card-english-front">{card.english}</span>
-      <span className="card-romaji-hint">{card.romaji}</span>
+      <span className="card-romaji-hint">{pronunciation}</span>
     </>
   );
 
-  const backContent = mode === 'jp-en' ? (
+  const backContent = mode === 'target-en' ? (
     <>
       <span className="card-label">English</span>
-      <span className="card-romaji">{card.romaji}</span>
+      <span className="card-romaji">{pronunciation}</span>
       <span className="card-english">{card.english}</span>
       <span className="card-category-badge">{card.category}</span>
     </>
   ) : (
     <>
-      <span className="card-label">Japanese</span>
-      <span className="card-japanese">{card.japanese}</span>
+      <span className="card-label">{language === 'japanese' ? 'Japanese' : 'Portuguese'}</span>
+      <span className="card-japanese">{word}</span>
       {reading && <span className="card-reading-back">{reading}</span>}
       <span className="card-category-badge">{card.category}</span>
     </>
