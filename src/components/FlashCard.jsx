@@ -20,7 +20,7 @@ export default function FlashCard({ card, mode = 'target-en', wordKey, pronKey, 
 
   const frontContent = mode === 'target-en' ? (
     <>
-      <span className="card-label">{language === 'japanese' ? 'Japanese' : 'Portuguese'}</span>
+      <span className="card-label">{language.charAt(0).toUpperCase() + language.slice(1)}</span>
       <span className="card-japanese">{word}</span>
       {reading && <span className="card-reading">{reading}</span>}
     </>
@@ -41,7 +41,7 @@ export default function FlashCard({ card, mode = 'target-en', wordKey, pronKey, 
     </>
   ) : (
     <>
-      <span className="card-label">{language === 'japanese' ? 'Japanese' : 'Portuguese'}</span>
+      <span className="card-label">{language.charAt(0).toUpperCase() + language.slice(1)}</span>
       <span className="card-japanese">{word}</span>
       {reading && <span className="card-reading-back">{reading}</span>}
       <span className="card-category-badge">{card.category}</span>

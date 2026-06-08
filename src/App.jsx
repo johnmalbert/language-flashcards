@@ -5,12 +5,14 @@ import LanguagePicker from './components/LanguagePicker'
 import japaneseVocab from './data/vocabulary'
 import portugueseVocab from './data/portuguese'
 import germanVocab from './data/german'
+import latinVocab from './data/latin'
 import './App.css'
 
 const LANGUAGES = {
   japanese: { label: '日本語 Japanese', vocab: japaneseVocab, flag: '🇯🇵', wordKey: 'japanese', pronKey: 'romaji' },
   portuguese: { label: '🇧🇷 Portuguese', vocab: portugueseVocab, flag: '🇧🇷', wordKey: 'portuguese', pronKey: 'pronunciation' },
   german: { label: '🇩🇪 German', vocab: germanVocab, flag: '🇩🇪', wordKey: 'german', pronKey: 'pronunciation' },
+  latin: { label: '🏛️ Latin', vocab: latinVocab, flag: '🏛️', wordKey: 'latin', pronKey: 'pronunciation' },
 }
 
 function shuffle(arr) {
