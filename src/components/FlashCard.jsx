@@ -28,7 +28,6 @@ export default function FlashCard({ card, mode = 'target-en', wordKey, pronKey, 
     <>
       <span className="card-label">English</span>
       <span className="card-english-front">{card.english}</span>
-      <span className="card-romaji-hint">{pronunciation}</span>
     </>
   );
 

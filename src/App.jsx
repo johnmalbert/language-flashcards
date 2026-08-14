@@ -2,11 +2,27 @@ import { useState, useMemo, useCallback, useEffect } from 'react'
 import FlashCard from './components/FlashCard'
 import FilterBar from './components/FilterBar'
 import LanguagePicker from './components/LanguagePicker'
+import JlptPicker from './components/JlptPicker'
 import japaneseVocab from './data/vocabulary'
+import n5Vocab from './data/n5'
+import n4Vocab from './data/n4'
 import portugueseVocab from './data/portuguese'
 import germanVocab from './data/german'
 import latinVocab from './data/latin'
 import './App.css'
+
+// Japanese has multiple decks selectable via the JLPT picker.
+// 'all' is the common-1000 list; 'N5'/'N4' are JLPT sets.
+const JAPANESE_DECKS = {
+  all: japaneseVocab,
+  N5: n5Vocab,
+  N4: n4Vocab,
+}
+
+function getVocab(language, level) {
+  if (language === 'japanese') return JAPANESE_DECKS[level] || JAPANESE_DECKS.all
+  return LANGUAGES[language].vocab
+}
 
 const LANGUAGES = {
   japanese: { label: '日本語 Japanese', vocab: japaneseVocab, flag: '🇯🇵', wordKey: 'japanese', pronKey: 'romaji' },
@@ -26,8 +42,9 @@ function shuffle(arr) {
 
 export default function App() {
   const [language, setLanguage] = useState('japanese')
+  const [level, setLevel] = useState('all') // JLPT deck for Japanese: 'all' | 'N5' | ...
   const [filter, setFilter] = useState('all')
-  const [shuffled, setShuffled] = useState(() => shuffle(LANGUAGES.japanese.vocab))
+  const [shuffled, setShuffled] = useState(() => shuffle(getVocab('japanese', 'all')))
   const [index, setIndex] = useState(0)
   const [mode, setMode] = useState('target-en') // 'target-en' or 'en-target'
 
@@ -35,7 +52,15 @@ export default function App() {
 
   const handleLanguageChange = useCallback((newLang) => {
     setLanguage(newLang)
-    setShuffled(shuffle(LANGUAGES[newLang].vocab))
+    setLevel('all')
+    setShuffled(shuffle(getVocab(newLang, 'all')))
+    setIndex(0)
+    setFilter('all')
+  }, [])
+
+  const handleLevelChange = useCallback((newLevel) => {
+    setLevel(newLevel)
+    setShuffled(shuffle(getVocab('japanese', newLevel)))
     setIndex(0)
     setFilter('all')
   }, [])
@@ -56,9 +81,9 @@ export default function App() {
   }, [filtered.length])
 
   const handleShuffle = useCallback(() => {
-    setShuffled(shuffle(lang.vocab))
+    setShuffled(shuffle(getVocab(language, level)))
     setIndex(0)
-  }, [lang.vocab])
+  }, [language, level])
 
   const handleFilterChange = useCallback((cat) => {
     setFilter(cat)
@@ -76,14 +101,24 @@ export default function App() {
 
   const currentNum = filtered.length > 0 ? (index % filtered.length) + 1 : 0
 
+  const deckSize = shuffled.length
+  const subtitle =
+    language === 'japanese' && (level === 'N5' || level === 'N4')
+      ? `JLPT ${level} · ${deckSize} words`
+      : '1000 Most Common Words'
+
   return (
     <div className="app">
       <header className="app-header">
         <h1>Flash Cards</h1>
-        <p className="subtitle">1000 Most Common Words</p>
+        <p className="subtitle">{subtitle}</p>
       </header>
 
       <LanguagePicker languages={LANGUAGES} active={language} onChange={handleLanguageChange} />
+
+      {language === 'japanese' && (
+        <JlptPicker active={level} onChange={handleLevelChange} />
+      )}
 
       <FilterBar active={filter} onChange={handleFilterChange} />
 
@@ -106,7 +141,7 @@ export default function App() {
         {card ? (
           <>
             <FlashCard
-              key={`${language}-${filter}-${index % filtered.length}-${mode}`}
+              key={`${language}-${level}-${filter}-${index % filtered.length}-${mode}`}
               card={card}
               mode={mode}
               wordKey={lang.wordKey}
